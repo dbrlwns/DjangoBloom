@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container my-4">
+    {% if user.is_authenticated %}
+        <div class="d-flex justify-content-end mb-3">
+            <a href="/posts/add/"><button class="btn btn-primary">Add post</button></a>
+        </div>
+    {% endif %}
+    <div class="row">
+
+        {% for post in posts %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <a href="/posts/{{ post.id }}/">
+            <img src="{{ post.postimage_set.first.image.url }}" class="card-img-top" width="100" alt="post-image" />
+                    </a>
+                <div class="card-body">
+                    <!-- 포스트 ID -->
+                    <small class="text-muted">#{{ post.id }}</small>
+
+                    <!-- 제목 -->
+                    <a href="/posts/{{ post.id }}/" style="text-decoration: none">
+                    <h5 class="card-title mt-2">{{ post.title }}</h5>
+                    </a>
+                    <!-- 작성자 -->
+                    <h6 class="card-subtitle mb-2 text-muted">작성자: {{ post.user }}</h6>
+
+                    <!-- 내용 -->
+                    <p class="card-text mt-3">{{ post.content | truncatechars:60 }}</p>
+                </div>
+
+                <!-- 작성일 -->
+                <div class="card-footer text-muted text-end">
+                    {{ post.created }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

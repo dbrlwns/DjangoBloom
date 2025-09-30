@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{# 나중에 postAdd의 내용을 posts.html 안에서 팝업형식으로 #}
+
+{% block content %}
+<div class="container mt-3">
+  <h2 class="mb-4">새 포스트 등록</h2>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- 제목 -->
+    <div class="mb-3">
+      <label for="{{ form.title.id_for_label }}" class="form-label">제목</label>
+      {{ form.title }}
+    </div>
+
+    <!-- 본문 -->
+    <div class="mb-3">
+      <label for="{{ form.content.id_for_label }}" class="form-label">본문</label>
+      {{ form.content }}
+    </div>
+
+    <!-- 이미지 업로드 -->
+    <div class="mb-3">
+        <input type="file" name="images" multiple required accept=".jpg, .png, .gif, .jpeg, .webp" />
+    </div>
+
+       {% if form.non_field_errors %}
+        <ul class="errorlist">
+            {% for error in form.non_field_errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary">포스트 등록</button>
+  </form>
+</div>
+{% endblock %}
