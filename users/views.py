@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.http.response import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 
@@ -39,8 +41,9 @@ def user_signup(request):
                     messages.error(request, 'Passwords do not match')
                     return render(request, 'signup.html', {'form': form})
 
-                User.objects.create_user(username=username,password=password1)
+                user = User.objects.create_user(username=username,password=password1)
                 user = authenticate(username=username, password=password1)
+
                 login(request, user)
                 return redirect('/')
         else:
@@ -72,22 +75,14 @@ def user_login(request):
     }
     return render(request, 'login.html', context)
 
-@require_POST
 def user_edit(request):
     user = request.user
-
-    form = RevisionForm(request.POST, request.FILES)
+    form = RevisionForm(request.POST, request.FILES, instance=user)
     if form.is_valid():
-        user.first_name = form.cleaned_data['first_name']
-        user.last_name = form.cleaned_data['last_name']
-        user.email = form.cleaned_data['email']
-
-        if form.cleaned_data['profile_image']:
-            user.profile_image = form.cleaned_data['profile_image']
-
-        user.save()
+        form.save()
         return redirect("/users/userinfo/")
     else:
-        return redirect("/users/userinfo/")
+        pass
+
 
 

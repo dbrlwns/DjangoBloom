@@ -7,7 +7,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 
-from posts.forms import PostAddForm, PostImageForm
+from posts.forms import PostAddForm, PostImageForm, CommentForm
 from posts.models import Post, PostImage
 
 from django.shortcuts import redirect
@@ -29,13 +29,23 @@ def post_detail(request, postId):
     context = {}
     post = get_object_or_404(Post, id=postId)
     if request.method == "POST":
-        form = PostAddForm(request.POST, instance=post)
-        if form.is_valid():
-            post.save() # Django가 instance의 field 값을 cleaned_data 값으로 업데이트
-            return redirect(f'/posts/{post.id}/')
+        if "update_post" in request.POST:
+            form = PostAddForm(request.POST, instance=post)
+            if form.is_valid():
+                post.save() # Django가 instance의 field 값을 cleaned_data 값으로 업데이트
+                return redirect(f'/posts/{post.id}/')
+        elif "add_comment" in request.POST:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.user = request.user
+                comment.post = post
+                comment.save()
+                return redirect(f'/posts/{post.id}/')
     else:
         form = PostAddForm(instance=post)
-        context = {"post" : post, 'form': form}
+        comment = CommentForm()
+        context = {"post" : post, 'form': form, 'comment': comment}
     return render(request, "postDetail.html", context)
 
 

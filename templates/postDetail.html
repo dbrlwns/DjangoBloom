@@ -54,11 +54,40 @@
             <hr>
             <p class="mb-4">{{ post.content }}</p>
             <hr>
+            <h6>댓글 ({{ post.comment_set.count }})</h6>
+            <ul>
+                {% for comment in post.comment_set.all %}
+                    <li class="comment">
+                        {% if post.user.profile_image.url %}
+                        <img src="{{ comment.user.profile_image.url }}"
+                           alt="user image"
+                           class="rounded-circle"
+                           style="width: 20px; height: 20px; object-fit: cover;">
+                        {% else %}
+                        <img src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
+                           alt="user image"
+                           class="rounded-circle"
+                           style="width: 40px; height: 40px; object-fit: cover;">
+                        {% endif %}
+                        {{ comment.user.username }} : {{ comment.content }}</li>
+                {% endfor %}
+            </ul>
+            <hr>
             <p class="text-muted"><small>작성일: {{ post.created }}</small></p>
+
+            {% if user.is_authenticated %}
+                <form method="POST" action="">
+                {% csrf_token %}
+                <label for="{{ comment.title.id_for_label }}">댓글추가</label>
+                {{ comment.content }}
+                <input type="hidden" value="{{ user }}" />
+                <input type="submit" value="작성" name="add_comment"> <!-- 1개 view에서 2개 POST 처리를 위한 name attr -->
+                </form>
+            {% endif %}
 
         <!-- post.user control 영역 -->
             {% if post.user == request.user %}
-            <div class="self-control">
+            <div class="self-control mt-3">
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editModal">수정하기</button>
             <a href="delete/"><button type="button" class="btn btn-danger">삭제하기</button></a>
             </div>
@@ -78,7 +107,7 @@
                           {% csrf_token %}
                           {{ form.as_p }}
                           <div class="text-end">
-                            <button type="submit" class="btn btn-primary">저장</button>
+                            <input type="submit" class="btn btn-primary" value="저장" name="update_post" />
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                           </div>
                         </form>

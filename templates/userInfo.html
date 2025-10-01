@@ -5,7 +5,7 @@
     <div class="container mt-4">
   <div class="card shadow-sm">
     <div class="card-body">
-      <form method="post" enctype="multipart/form-data" action="/users/userEdit/">
+      <form method="POST" enctype="multipart/form-data" action="/users/userEdit/">
         {% csrf_token %}
 
         <div class="row">
@@ -60,6 +60,16 @@
               <label for="dateJoined" class="form-label">가입일</label>
               <input type="text" class="form-control" id="dateJoined"
                      value="{{ user.date_joined|date:'Y-m-d' }}" readonly>
+            </div>
+
+            <div class="message">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
 
             <button type="submit" class="btn btn-primary">저장하기</button>

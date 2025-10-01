@@ -1,5 +1,5 @@
 from django.contrib import admin
-from posts.models import Post, PostImage
+from posts.models import Post, PostImage, Comment
 import admin_thumbnails
 
 # Register your models here.
@@ -20,6 +20,9 @@ class PostAdmin(admin.ModelAdmin):
 
     inlines = [PostImageInline, ]
 
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass
 
 @admin.register(PostImage)
 @admin_thumbnails.thumbnail("image")
