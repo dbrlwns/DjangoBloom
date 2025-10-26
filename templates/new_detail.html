@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5 d-flex justify-content-center">
+    <div class="row w-100">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto">
+            <article class="card shadow-sm p-4">
+                <h1 class="mb-3">{{ post.title }}</h1>
+                <div class="text-muted mb-3">
+                    <span>By {{ post.user.username }}</span> ·
+                    <small>{{ post.pub_date }}</small>
+                </div>
+                <div class="main mb-4">
+                    {{ post.description|safe }}
+                </div>
+                <div>Comment 영역 (추후 추가예정)</div><br>
+                {% if post.user == request.user %}
+                    <form method="POST" action="/post2/newDelete/{{ post.id }}/">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-outline-danger" value="Delete" />
+                    </form><br />
+                {% endif %}
+                <a href="/post2/newList/" class="btn btn-outline-primary">← Back to list</a>
+            </article>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* TinyMCE에서 들어오는 이미지 크기 제어 */
+    .main img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 1rem auto;  /* 중앙 정렬 + 여백 */
+        border-radius: 0.5rem;
+    }
+</style>
+{% endblock %}

@@ -32,6 +32,10 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS = [
+    # 'ckeditor',
+    # 'ckeditor_uploader',
+    'tinymce',
+    'post2',
     'posts',
     'users',
     'django.contrib.admin',
@@ -57,8 +61,8 @@ ROOT_URLCONF = 'DjangoBloom.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,6 +87,25 @@ DATABASES = {
     }
 }
 
+TINYMCE_JS_URL = 'https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js'
+TINYMCE_COMPRESSOR = False
+# 보통 XSS Attack을 방지하기 위해 화이트리스트를 활용함.
+TINYMCE_DEFAULT_CONFIG = {
+    "height": 1000,
+    "menubar": False,
+    "plugins": "image code codesample",
+    "toolbar": "undo redo | styleselect | fontsize | "
+               "bold italic | alignleft aligncenter alignright alignjustify | "
+               "image codesample",
+    "fontsize_formats": "8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt",
+    "content_style": "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+    "images_upload_url" : "/upload/",
+    "automatic_uploads" : True,
+
+    # 상대경로를 절대경로로 만듬
+    "relative_urls": False,
+
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

@@ -17,14 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from post2.views import upload_image
 from . import settings
 from .views import index
 from django.conf.urls.static import static
+from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('users/', include('users.urls')),
     path('posts/', include('posts.urls')),
+    path('post2/', include('post2.urls')),
+    path('upload/', upload_image, name="upload_image"),
 ]
 
 
