@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-4">
+  <h2>포스트 수정</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}  <!-- TinyMCE JS 포함 -->
+    {{ form.as_p }}
+    <div>
+       <label for="id_tags">해시태그 :&nbsp; </label>
+       <input id="id_tags" name="tags" type="text"
+               placeholder="쉼표(,)로 구분해 입력"
+               value="{{ tags }}">
+       <!-- input의 name 속성을 주었으므로 view에서 request.POST.get("name")으로 접근 -->
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">수정 완료</button>
+    <a href="/post2/newDetail/{{ post.id }}/" class="btn btn-secondary mt-2">취소</a>
+  </form>
+</div>
+{% endblock %}

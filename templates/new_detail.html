@@ -7,18 +7,32 @@
             <article class="card shadow-sm p-4">
                 <h1 class="mb-3">{{ post.title }}</h1>
                 <div class="text-muted mb-3">
+                    {% if post.user.is_authenticated %}
                     <span>By {{ post.user.username }}</span> ·
+                    {% else %}
+                        <span>By AnonymousUser</span> ·
+                    {% endif %}
                     <small>{{ post.pub_date }}</small>
                 </div>
                 <div class="main mb-4">
                     {{ post.description|safe }}
                 </div>
+                <div>
+                Tags :&nbsp;
+                {% if post.hashTag %}
+                {% for tag in post.hashTag.all %}
+                <a href="/post2/newList/tag/{{ tag.hash }}/">#{{ tag.hash }}</a>&nbsp;
+                {% endfor %}
+                {% endif %}
+                </div>
                 <div>Comment 영역 (추후 추가예정)</div><br>
                 {% if post.user == request.user %}
-                    <form method="POST" action="/post2/newDelete/{{ post.id }}/">
+                    <form method="POST" action="{% url "post2:postDelete" postId=post.id %}">
                     {% csrf_token %}
                     <input type="submit" class="btn btn-outline-danger" value="Delete" />
+                    <a href="{% url 'post2:editPost' postId=post.id %}"><span class="btn btn-outline-primary">Revision</span></a>
                     </form><br />
+
                 {% endif %}
                 <a href="/post2/newList/" class="btn btn-outline-primary">← Back to list</a>
             </article>
