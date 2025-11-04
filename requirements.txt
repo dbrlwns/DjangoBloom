@@ -1,0 +1,12 @@
+asgiref==3.9.1
+Django==5.2.6
+django-admin-thumbnails==0.2.9
+django-ckeditor==6.7.3
+django-js-asset==3.1.2
+django-tinymce==4.1.0
+git-filter-repo==2.47.0
+pillow==11.3.0
+six==1.17.0
+sqlparse==0.5.3
+transaction==5.0
+zope.interface==8.0.1

@@ -7,5 +7,4 @@ class User(AbstractUser):
         upload_to='profile_images/',
         blank=True,
         null=True,
-        default="profile_images/2om.jpg" # Default value
     )

@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'DjangoBloom.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR.parent / 'db.sqlite3',
     }
 }
 
@@ -144,7 +144,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR.parent / 'media'
 
 
 # Default primary key field type

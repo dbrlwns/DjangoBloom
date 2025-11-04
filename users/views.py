@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseForbidden
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from users.forms import LoginForm, SignupForm, RevisionForm
@@ -75,14 +77,20 @@ def user_login(request):
     }
     return render(request, 'login.html', context)
 
+@login_required
 def user_edit(request):
-    user = request.user
-    form = RevisionForm(request.POST, request.FILES, instance=user)
-    if form.is_valid():
-        form.save()
-        return redirect("/users/userinfo/")
-    else:
-        pass
+    if request.method == "POST":
+        user = request.user
+        form = RevisionForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            # profile_image가 User모델의 필드면 .save()가 자동으로 처리
+            print("file: ", request.FILES["profile_image"])
+            form.save()
+            return redirect("/users/userinfo/")
+        else:
+            return HttpResponseForbidden(f"error occured : {form.errors}")
+    else: return render(request, "userInfo.html")
 
-
-
+'''
+<ul class="errorlist"><li>first_name<ul class="errorlist" id="id_first_name_error"><li>This field is required.</li></ul></li><li>last_name<ul class="errorlist" id="id_last_name_error"><li>This field is required.</li></ul></li></ul>
+'''
