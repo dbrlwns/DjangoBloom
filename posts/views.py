@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 
 from posts.forms import PostAddForm, PostImageForm, CommentForm
-from posts.models import Post, PostImage
+from posts.models import Post, PostImage, Comment
 
 from django.shortcuts import redirect
 
@@ -75,6 +75,14 @@ def post_add(request):
     else:
         form = PostAddForm()
     return render(request, "postAdd.html",{'form' : form})
+
+@require_POST
+def comment_delete(request, postId, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.user == comment.user:
+        comment.delete()
+        return redirect(f'/posts/{postId}/')
+    else: return redirect(f'/posts/{postId}/')
 
 
 
