@@ -32,8 +32,31 @@
             {% endfor %}
         </ul>
     {% endif %}
+    <div class="d-flex justify-content-between">
+    <button type="submit" class="btn btn-primary" style="height: 40px;" id="liveToastBtn" >포스트 등록</button>
 
-    <button type="submit" class="btn btn-primary">포스트 등록</button>
+            {% if form.errors %}
+            <div class="alert alert-danger py-0 pt-3 px-5" role="alert">
+            {% if form.title.errors %}{{ form.title.errors }}{% endif %}
+            {% if form.content.errors %}{{ form.content.errors }}{% endif %}
+            </div>
+            {% endif %}
+
+    </div>
+
   </form>
-</div>
+
+
+
+    <script>
+    const toastTrigger = document.getElementById('liveToastBtn')
+    const toastLiveExample = document.getElementById('liveToast')
+
+    if (toastTrigger) {
+      const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+      toastTrigger.addEventListener('click', () => {
+        toastBootstrap.show()
+      })
+    }
+    </script>
 {% endblock %}

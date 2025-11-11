@@ -12,8 +12,8 @@
         {% for post in posts %}
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card shadow-sm h-100">
-                <a href="/posts/{{ post.id }}/">
-            <img src="{{ post.postimage_set.first.image.url }}" class="card-img-top" width="100" alt="post-image" />
+                <a href="/posts/{{ post.id }}/" class="ratio ratio-1x1">
+            <img src="{{ post.postimage_set.first.image.url }}" class="card-img-top " width="100" alt="post-image" />
                     </a>
                 <div class="card-body">
                     <!-- 포스트 ID -->

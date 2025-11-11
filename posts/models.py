@@ -6,8 +6,8 @@ from django.db import models
 class Post(models.Model):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE, verbose_name="작성자")
 
-    title = models.CharField("title")
-    content = models.TextField("content")
+    title = models.CharField("title", blank=True)
+    content = models.TextField("content" , blank=True)
     created = models.DateTimeField("작성일시", auto_now_add=True)
 
     objects = models.Manager() # explicit declaration, Unresolved attr Warning 방지
