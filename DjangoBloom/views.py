@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 
 from post2.models import Blog2, HashTag
+from post3.models import Content
 from posts.models import Post
 
 
@@ -9,5 +10,7 @@ def index(request):
     main_post = Blog2.objects.filter(hashTag__hash="main").first()
     # main_post = Blog2.objects.get(hashTag=tag)
     side_posts = Post.objects.all()[:6] # 6개까지만
-    context = {"main_post": main_post, "side_posts": side_posts}
+    queries = Content.objects.all()[:10]
+    context = {"main_post": main_post, "side_posts": side_posts,
+               "queries": queries}
     return render(request, 'base.html', context)

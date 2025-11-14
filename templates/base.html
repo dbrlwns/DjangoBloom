@@ -78,7 +78,7 @@
         </div>
         <!-- Description -->
         <div class="col-md-3 pr-3 py-2" style="font-family: 'Noto Sans KR', sans-serif; line-height: 1.6;">
-          <h5 class="fw-bold mb-3 border-bottom pb-2"><< About This <a style="text-decoration: none" href="/post2/newList/">Blog</a></h5>
+          <h5 class="fw-bold mb-3 border-bottom pb-2"><< About <a style="text-decoration: none" href="/post2/newList/">Blogs</a></h5>
           <p class="text-muted small">
             이미지와 코드를 블로그 형태로 정리<br>
             <span class="fw-semibold">여러 흔적</span>을 남길 예정
@@ -131,6 +131,47 @@
               </div>
             </div>
         </div>
+
+{#        Queries Description Section#}
+        <div class="row">
+            <div class="col-md-9 text-center">
+                {% for query in queries %}
+                <a class="d-flex flex-column align-items-center text-decoration-none text-body-emphasis border-bottom border-secondary" style="border-radius: 10px;" data-bs-toggle="collapse" href="#collapseExample{{ query.id }}" role="button" aria-expanded="false" aria-controls=collapseExample{{ query.id }}">
+                    <h3>{{ query.content }} (댓글:{{ query.comment_set.count }})</h3>
+                </a>
+                    <div class="collapse" id="collapseExample{{ query.id }}">
+                        <div class="card card-body">
+                            {% for comment in query.comment_set.all %}
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold" style="font-size: 0.9rem;">
+                                            {{ comment.user.username }}
+                                        </div>
+                                        <div style="font-size: 0.9rem;">
+                                            {{ comment.comment }}
+                                        </div>
+                                        <div class="text-muted" style="font-size: 0.75rem;">
+                                            {{ comment.pub_date|date:'n/j G:i' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="text-muted">댓글이 없습니다.</div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+            {% endfor %}
+            </div>
+        <div class="col-md-3">
+            <h5 class="fw-bold mb-3 border-bottom pb-2"><< About <a style="text-decoration: none" href="/post3/">Query</a></h5>
+                  <p class="text-muted small">
+                    단일 문자열 콘텐츠
+                    <span class="fw-semibold">ex)문의</span>
+                      <br>Adapt SPA Philosophy
+                  </p>
+        </div>
+        </div>
     </div>
         <span class="placeholder col-12 bg-danger"></span>
         <span class="placeholder col-12 bg-warning"></span>
@@ -139,7 +180,7 @@
         <span class="placeholder col-12 bg-info"></span>
         <span class="placeholder col-12 bg-secondary"></span>
         <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 30%">완성도 30%</div>
+          <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 40%">완성도 40%</div>
         </div>
 
 
