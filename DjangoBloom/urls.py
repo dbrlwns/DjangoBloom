@@ -29,6 +29,7 @@ urlpatterns = [
     path('posts/', include('posts.urls')),
     path('post2/', include('post2.urls')),
     path('upload/', upload_image, name="upload_image"),
+    path('post3/', include('post3.urls')),
 ]
 
 

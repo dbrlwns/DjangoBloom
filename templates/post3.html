@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-between">
+    <h1>Post3 Page : Design Philosophy is SPA </h1>
+    {% if user.is_authenticated %}
+    <button type="button" class="btn btn-primary mx-5 my-3" data-bs-toggle="modal" data-bs-target="#editModal">추가하기</button>
+    {% endif %}
+    </div>
+    <div class="container">
+    {% for content in contents %}
+            <div class="row mb-3">
+                <a class="d-flex flex-column align-items-center text-decoration-none text-body-emphasis border-bottom border-secondary" style="border-radius: 10px;" data-bs-toggle="collapse" href="#collapseExample{{ content.id }}" role="button" aria-expanded="false" aria-controls=collapseExample{{ content.id }}">
+                    <h4 style="">{{ content.content }}&nbsp;({{ content.comment_set.count }})</h4><small class="text-muted">&nbsp;created by {{ content.user.username }} at {{ content.pub_date }}</small>
+                </a>
+
+                <div class="collapse" id="collapseExample{{ content.id }}">
+                  <div class="card card-body">
+                      <!-- content에 연결된 comments 출력 -->
+                      {% for comment in content.comment_set.all %}
+                          <div class="d-flex align-items-start mb-3">
+                          {% if comment.user.profile_image %}
+                          <img src="{{ comment.user.profile_image.url }}"
+                               alt="user image"
+                               class="rounded-circle mx-0"
+                               style="width: 30px; height: 30px; object-fit: cover;">
+                                {% else %}
+                                <img src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
+                               alt="user image"
+                               class="rounded-circle mx-0"
+                               style="width: 30px; height: 30px; object-fit: cover;">
+                                {% endif %}&nbsp;
+                                <!-- 댓글 내용 -->
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold" style="font-size: 0.9rem;">
+                                        {{ comment.user.username }}
+                                    </div>
+                                    <div style="font-size: 0.9rem;">
+                                        {{ comment.comment }}
+                                    </div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">
+                                        {{ comment.pub_date|date:'n/j G:i' }}
+                                    </div>
+                                </div>
+
+{#                          삭제 버튼#}
+                          {% if user == comment.user %}
+                                  <form method="POST" class="ms-2">
+                              {% csrf_token %}
+                              <input type="hidden" value="{{ comment.id }}" name="commentId">
+                              <input type="hidden" value="{{ content.id }}" name="contentId">
+                              <input type="submit" class="btn btn-outline-danger" style="padding-top: 0px;" value="x" name="comment_delete">
+                          </form>
+                          {% endif %}
+
+                          </div>
+                          {% empty %}
+                          <div class="text-center text-muted mb-3">
+                            댓글이 없습니다.
+                          </div>
+                          {% endfor %}
+
+{#                    댓글 작성#}
+                  {% if user.is_authenticated %}
+                  <div class="d-flex">
+                      <form method="POST" class="d-flex justify-content-center">
+                            {% csrf_token %}
+                            <label for="commentInput" style="font-size: 1.2rem; margin-top: 3px;">Comment&nbsp;</label>
+                            <input id="commentInput" type="text" placeholder="---write ur comment---" style="border-radius: 20px" name="comment">
+                            <input type="hidden" value="{{ content.id }}" name="contentId">&nbsp;
+                            <input type="submit" class="btn btn-secondary" name="comment_register">
+                     </form>
+                      {% if request.user == content.user %}
+                     <form method="POST">
+                         {% csrf_token %}
+                         <input type="hidden" value="{{ content.id }}" name="contentId">&nbsp;
+                         <input type="submit" class="btn btn-danger" value="삭제" name="content_delete">
+                     </form>
+                      {% endif %}
+                      </div>
+                  {% endif %}
+                  </div>
+                </div>
+            </div>
+    {% empty %}
+        <p>Nothing contents</p>
+    {% endfor %}
+    </div>
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">게시물 추가</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form method="POST">
+                          {% csrf_token %}
+                          {{ form.as_p }}
+                          <div class="text-end">
+                            <input type="submit" class="btn btn-primary" value="저장" name="content_register"  />
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+{% endblock %}

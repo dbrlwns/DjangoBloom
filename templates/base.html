@@ -13,8 +13,9 @@
     <div class="d-flex align-items-center gap-3">
         <a href="/" class="navbar-brand text-success fw-bold">
           Django Practice</a>
-        <a href="/posts" class="text-body-emphasis text-decoration-none" >Post</a>
+        <a href="/posts/" class="text-body-emphasis text-decoration-none" >Post</a>
         <a href="/post2/newList/" class="text-body-emphasis text-decoration-none">Blog</a>
+        <a href="/post3/" class="text-body-emphasis text-decoration-none" >Query</a>
     </div>
 
     <!-- 오른쪽 영역 -->
@@ -161,6 +162,16 @@
             localStorage.setItem('theme', theme)
         });
     </script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const openId = urlParams.get("open");
+    if (openId) {
+        const target = document.getElementById(`collapseExample${openId}`);
+        if (target) {
+            const bsCollapse = new bootstrap.Collapse(target, { toggle: true });
+        }
+    }
+</script>
     <script src="https://kit.fontawesome.com/d7b9ae0b6b.js" crossorigin="anonymous"></script>
 
     <!-- Prism.js CSS -->
